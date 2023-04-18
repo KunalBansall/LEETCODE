@@ -37,10 +37,9 @@ struct Node
   Node* left;
   Node* right;
 };
-
-
-
-
+*/
+//   inorder LNR
+//   preorder NLR
 /*Complete the code here.
 Node is as follows:
 struct Node
@@ -52,69 +51,36 @@ struct Node
 */
 class Solution{
     public:
-    int findposition(int in[],int element,int start,int end)
-    {
-        for(int i=start;i<=end;i++)
-        {
-            if(in[i]==element)
-            return i;
-        }
-        return -1;
-    }
-    Node* solve(int in[],int pre[],int &index,int inorderstart,int inorderend,int n)
-    {
-        if(index>=n||inorderstart >inorderend){
-            return NULL;
-        }
-        
+     int  findPosition(int in[], int element,int n){
+         for(int i=0;i<n;i++){
+             if(in[i]==element){
+                 in[i]=INT_MIN;
+                 return i;
+             }
+         }
+         return -1;
+     }
+    Node* solve(int in[],int pre[],int& index,int inorderstart,int inorderend,int n){
+         if(index>=n || inorderstart>inorderend){
+             return NULL;
+         }
         int element = pre[index++];
-        Node* root = new Node(element);
-        int position = findposition(in,element,inorderstart,inorderend);
+        Node* root = new Node (element);
+        int position = findPosition(in,element ,n);
         
-        root->left=solve(in,pre,index,inorderstart,position-1,n);
-        root->right=solve(in,pre,index,position+1,inorderend,n);
-        
+        root->left = solve(in,pre,index,inorderstart,position-1,n);
+        root->right = solve(in,pre,index,position+1,inorderend,n);
         return root;
     }
+    
+    
     Node* buildTree(int in[],int pre[], int n)
     {
-        // Code here
-        int preorderindex=0;
-        Node* ans = solve(in,pre,preorderindex,0,n-1,n);
-        return ans;
+       int preOrderIndex=0;
+       Node* ans = solve (in,pre,preOrderIndex,0,n-1,n);
+       return ans;
     }
 };
-// */
-// class Solution{
-//     public:
-//     void mapping(int in[], unordered_map<int,int> &m,int n){
-//         for(int i=0;i<n;i++){
-//             m[in[i]]=i;     
-//             }
-//             }
-//     Node* solve(int in[],int pre[],int& index,int inorderstart,int inorderend,int n,unordered_map<int,int> &m){
-//          if(index>=n || inorderstart>inorderend){
-//              return NULL;
-//          }
-//         int element = pre[index++];
-//         Node* root = new Node (element);
-//         int position = m[element];
-        
-//         root->left = solve(in,pre,index,inorderstart,position-1,n,m);
-//         root->right = solve(in,pre,index,position+1,inorderend,n,m);
-//         return root;
-//     }
-    
-    
-//     Node* buildTree(int in[],int pre[], int n)
-//     {
-//       int preOrderIndex=0;
-//       unordered_map<int,int> m;
-//       mapping(in,m,n);
-//       Node* ans = solve (in,pre,preOrderIndex,0,n-1,n,m);
-//       return ans;
-//     }
-// };
 
 //{ Driver Code Starts.
 int main()
